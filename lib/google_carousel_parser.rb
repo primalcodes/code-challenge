@@ -1,1 +1,3 @@
-# Class to house the logic for parsing the Google Carousel search results
+module GoogleCarouselParser
+  BASE_URL = 'https://www.google.com/'
+end
