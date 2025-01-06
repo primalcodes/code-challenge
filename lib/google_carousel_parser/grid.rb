@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
-require_relative 'shared_logic'
+require_relative '../google_carousel_parser'
 
 module GoogleCarouselParser
   # Responsible for parsing "Grid" type carousels
   class Grid
-    include SharedLogic
+    include GoogleCarouselParser
 
     CAROUSEL_SELECTOR = 'div[data-attrid^="kc:/"]'
     CAROUSEL_ITEMS_SELECTOR = '.iELo6'
@@ -40,7 +40,7 @@ module GoogleCarouselParser
 
     def extract_carousel_item_data(node:)
       link = extract_link(node:)
-      link_value = link.nil? ? nil : "#{SharedLogic::BASE_URL}#{link}"
+      link_value = link.nil? ? nil : "#{GoogleCarouselParser::BASE_URL}#{link}"
       image = extract_image(node:)
       name, extension = extract_name_and_extension(node:)
 
