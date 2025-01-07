@@ -2,16 +2,17 @@
 # `ruby perform.rb`
 
 require_relative 'lib/google_parser'
+require 'json'
 
-# Loop through all .html files in the files directory to parse the HTML
-# and output the results
+# Loop through all .html files in the files directory and parse the HTML
+# and output the results as JSON
 
 files = Dir[File.join(File.dirname(__FILE__), 'files', '*.html')]
 files.each do |file|
   html = File.read(file)
-  results = GoogleParser.new(html: html).parse
 
-  puts "Results for #{file}"
-  puts results[:artworks].length
-  puts
+  json_data = JSON.pretty_generate(GoogleParser.new(html: html).parse)
+  file_basename = File.basename(file, '.html')
+  json_file_name = File.join(File.dirname(__FILE__), 'files/json_output', "#{file_basename}.json")
+  File.write(json_file_name, json_data)
 end

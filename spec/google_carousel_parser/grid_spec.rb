@@ -2,6 +2,9 @@ require 'rspec'
 require 'spec_helper'
 require 'nokogiri'
 require_relative '../../lib/google_carousel_parser/grid'
+require_relative '../support/shared_examples/artwork_examples'
+require_relative '../support/shared_examples/no_results_examples'
+require_relative '../support/shared_examples/van_gogh_examples'
 
 # Generate Rspec test for Google Carousel Grid Carousel class
 RSpec.describe GoogleCarouselParser::Grid do
@@ -11,28 +14,7 @@ RSpec.describe GoogleCarouselParser::Grid do
       let(:grid_carousel) { GoogleCarouselParser::Grid.new(html_doc: Nokogiri::HTML(html)) }
       let(:parsed_carousel) { grid_carousel.parse }
 
-      it 'returns a hash' do
-        expect(parsed_carousel).to be_a(Hash)
-      end
-
-      it 'returns a hash with the key :artworks' do
-        expect(parsed_carousel).to have_key(:artworks)
-      end
-
-      it 'returns a hash with the key :artworks that is an array' do
-        expect(parsed_carousel[:artworks]).to be_an(Array)
-      end
-
-      it 'returns a hash with the key :artworks that is an array of hashes' do
-        expect(parsed_carousel[:artworks].first).to be_a(Hash)
-      end
-
-      it 'returns a hash with the key :artworks that is an array of hashes with the keys :name, :image, :link, and :extensions' do
-        expect(parsed_carousel[:artworks].first).to have_key(:name)
-        expect(parsed_carousel[:artworks].first).to have_key(:image)
-        expect(parsed_carousel[:artworks].first).to have_key(:link)
-        expect(parsed_carousel[:artworks].first).to have_key(:extensions)
-      end
+      it_behaves_like 'a google parser'
     end
 
     context 'when the html does not contain a grid carousel' do
@@ -40,13 +22,7 @@ RSpec.describe GoogleCarouselParser::Grid do
       let(:empty_grid_carousel) { GoogleCarouselParser::Grid.new(html_doc: Nokogiri::HTML(html)) }
       let(:missing_parsed_carousel) { empty_grid_carousel.parse }
 
-      it 'returns empty artworks array' do
-        expect(missing_parsed_carousel).to eq(
-          {
-            artworks: []
-          }
-        )
-      end
+      it_behaves_like 'no results found'
     end
   end
 
@@ -55,19 +31,7 @@ RSpec.describe GoogleCarouselParser::Grid do
     let(:grid_carousel) { GoogleCarouselParser::Grid.new(html_doc: Nokogiri::HTML(html)) }
     let(:parsed_carousel) { grid_carousel.parse }
 
-    it 'finds the correct number of artworks' do
-      correct_number_of_artworks = 47
-      expect(parsed_carousel[:artworks].length).to eq(correct_number_of_artworks)
-    end
-
-    it 'finds the Starry Night artwork' do
-      artwork_title = 'The Starry Night'
-      artwork = parsed_carousel[:artworks].find { |item| item[:name] == artwork_title }
-
-      expect(artwork[:image]).to include('data:image/jpeg;base64')
-      expect(artwork[:link]).to include('https://www.google.com/search?')
-      expect(artwork[:extensions]).to include('1889')
-    end
+    it_behaves_like 'van gogh artworks'
   end
 
   context 'Picasso Sculptures' do

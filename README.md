@@ -26,3 +26,17 @@ Add also to your array the painting thumbnails present in the result page file (
 Test against 2 other similar result pages to make sure it works against different layouts. (Pages that contain the same kind of carrousel. Don't necessarily have to be paintings.)
 
 The suggested time for this challenge is 4 hours. But, you can take your time and work more on it if you want.
+
+## Developer Notes
+
+To run this project:
+1. `bundle install` to add all of the gems to your environment.
+2. `ruby perform.rb` to execute the code and generate json files in the `files/json_output` directory.
+
+## Additional Notes
+
+This challenge was a lot of fun to pull together! I added a second carousel type (tab lists) that can be found with such searches as:
+1. [List of Tesla Inventions] https://www.google.com/search?q=list+of+tesla+inventions
+2. [List of Presidents] https://www.google.com/search?q=list+of+presidents
+
+This was to demonstrate a potential solution to feed a `GoogleParser` class a limited set of varied HTML responses and find the right parser to return the results.
