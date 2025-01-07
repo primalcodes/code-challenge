@@ -12,6 +12,6 @@ files.each do |file|
   results = GoogleParser.new(html: html).parse
 
   puts "Results for #{file}"
-  puts results
+  puts results[:artworks].length
   puts
 end

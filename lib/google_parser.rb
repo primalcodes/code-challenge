@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
-require 'debug'
+
+# This class is responsible in determining which parser to use for parsing the HTML
+# from Google search results
 class GoogleParser
   attr_reader :doc, :scripts
 
@@ -16,9 +18,7 @@ class GoogleParser
     # for the given HTML
     files = Dir[File.join(File.dirname(__FILE__), 'google_carousel_parser', '*.rb')]
 
-    puts files
     files.each do |file|
-      puts file
       require file
       class_name = File.basename(file, '.rb').split('_').map(&:capitalize).join
       parser = Object.const_get("GoogleCarouselParser::#{class_name}").new(html_doc: @doc)
